@@ -1,0 +1,10 @@
+public_ip2 100.27.15.196
+public_ip1 34.227.98.97
+public_ip1 52.23.255.185
+public_ip1 54.81.121.51
+public_ip1 54.80.153.141
+public_ip2 3.239.192.65
+public_ip1 18.208.253.92
+public_ip2 34.205.81.121
+public_ip1 54.174.178.244
+public_ip2 44.192.56.36

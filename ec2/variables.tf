@@ -5,4 +5,4 @@ variable "publicsubnet2-id" {}
 variable "privatesubnet1-id" {}
 variable "privatesubnet2-id" {}
 variable "securitygroupid"{}
-# variable "provisionerdata"{}
+variable "provisionerdata"{}

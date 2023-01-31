@@ -45,7 +45,7 @@ availability_zone = var.az2
   }
 }
 /*_________Routetables_________*/
-resource "aws_route_table" "pulic-route" {
+resource "aws_route_table" "public-route" {
   vpc_id = aws_vpc.mainvpc.id
   tags = {
     Name = "public-route"
@@ -57,7 +57,7 @@ resource "aws_route" "igw-route" {
   gateway_id = aws_internet_gateway.igw.id
 }
 resource "aws_route_table_association" "first" {
-  subnet_id      = aws_subnet.public_subnet_id2.id
+  subnet_id      = aws_subnet.public_subnet1.id
   route_table_id = aws_route_table.public-route.id
 }
 resource "aws_route_table_association" "second" {
@@ -65,7 +65,7 @@ resource "aws_route_table_association" "second" {
   route_table_id = aws_route_table.public-route.id
 }
 
-resource "aws_route_table" "privite-route" {
+resource "aws_route_table" "private-route" {
   vpc_id = aws_vpc.mainvpc.id
   tags = {
     Name = "private-route"
@@ -162,7 +162,7 @@ resource "aws_lb_target_group_attachment" "attach-proxy1" {
   port             = 80
 }
 resource "aws_lb_target_group_attachment" "attach-proxy2" {
-  target_group_arn = aws_lb_target_group.pub-targetGroup.arn
+  target_group_arn = aws_lb_target_group.publicgroup.arn
   target_id        = var.publicvmid2
   port             = 80
 }
@@ -181,8 +181,8 @@ resource "aws_lb" "private-lb" {
   internal           = true
   ip_address_type = "ipv4"
   load_balancer_type = "application"
-  security_groups    = [aws_security_group.security_groups.id]
-  subnets            = [aws_subnet.mysubnet3.id, aws_subnet.private_subnet1.id]
+  security_groups    = [aws_security_group.secgroup.id]
+  subnets            = [aws_subnet.private_subnet1.id, aws_subnet.private_subnet2.id]
   # tags = {
   #   Name = "private-lb"
   # }

@@ -7,7 +7,7 @@ module "network" {
   az2                = var.zone2
   cidr_from_anywhere = var.cidr_from_anywhere
   publicvmid1  = module.ec2.publicvmid1
-  publicvmid2  = module.ec2.publicvmid1
+  publicvmid2  = module.ec2.publicvmid2
   privatevmid1 = module.ec2.privatevmid1
   privatevmid2 = module.ec2.privatevmid2
 
@@ -17,13 +17,19 @@ module "ec2" {
   source          = "./ec2"
   ami_id          = var.ami_id
   vm_type         = var.vm_type
-  securitygroupid = module.network.secgroupid
-  publicsubnet1      = module.network.public_subnet_id1
-  publicsubnet2      = module.network.public_subnet_id2
-  privatesubnet1     = module.network.private_subnet_id1
-  privatesubnet2     = module.network.private_subnet_id2
+  securitygroupid = module.network.secgroup-id
+  publicsubnet1-id     = module.network.public_subnet_id1
+  publicsubnet2-id      = module.network.public_subnet_id2
+  privatesubnet1-id     = module.network.private_subnet_id1
+  privatesubnet2-id    = module.network.private_subnet_id2
 
 
 
-  # provisionerdata = var.provisiondata
+  provisionerdata =             ["sudo apt update -y",
+      "sudo apt install -y nginx",
+      "echo 'server { \n listen 80 default_server; \n  listen [::]:80 default_server; \n  server_name _; \n  location / { \n  proxy_pass http://${module.network.pivatedns}; \n  } \n}' > default",
+      "sudo mv default /etc/nginx/sites-enabled/default",
+      "sudo systemctl stop nginx",
+      "sudo systemctl start nginx"]
+    
 }
