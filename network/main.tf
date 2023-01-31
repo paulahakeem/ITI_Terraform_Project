@@ -158,12 +158,12 @@ resource "aws_lb_target_group" "publicgroup" {
 }
 resource "aws_lb_target_group_attachment" "attach-proxy1" {
   target_group_arn = aws_lb_target_group.publicgroup.arn
-  target_id        = var.proxy1Id
+  target_id        = var.publicvmid1
   port             = 80
 }
 resource "aws_lb_target_group_attachment" "attach-proxy2" {
   target_group_arn = aws_lb_target_group.pub-targetGroup.arn
-  target_id        = var.proxy2Id
+  target_id        = var.publicvmid2
   port             = 80
 }
 resource "aws_lb_listener" "listener" {
@@ -198,12 +198,12 @@ resource "aws_lb_target_group" "privategroup" {
 }
 resource "aws_lb_target_group_attachment" "attach-priv1" {
   target_group_arn = aws_lb_target_group.privategroup.arn
-  target_id        = var.privInstance1Id
+  target_id        = var.privatevmid1
   port             = 80
 }
 resource "aws_lb_target_group_attachment" "attach-priv2" {
   target_group_arn = aws_lb_target_group.privategroup.arn
-  target_id        = var.privInstance2Id
+  target_id        = var.privatevmid2
   port             = 80
 }
 resource "aws_lb_listener" "listener1" {

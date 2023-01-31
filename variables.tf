@@ -6,3 +6,6 @@ variable "subnet_cidr" {
 variable "zone1" {}
 variable "zone2" {}
 variable "cidr_from_anywhere" {}
+variable "ami_id" {}
+variable "vm_type" {}
+# variable "provisiondata"{}

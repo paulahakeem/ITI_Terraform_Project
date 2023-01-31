@@ -1,79 +1,89 @@
-# resource "aws_instance" "publicvm1" {
-#  ami           = var.proxy1-ami
-#  instance_type = var.proxy1-instance-type
-#  associate_public_ip_address = true
-#  subnet_id = var.mysubnet1-id
-#  vpc_security_group_ids = [var.pubSecGroupId]
-#  key_name = "paula_key"
-#  tags = {
-#     Name = "proxy1"
-#   }
-#  provisioner "local-exec" {
-#   when = create
-#    command = "echo public_ip1  ${self.public_ip} >> ./public_ip.txt"
-#  }
-#  connection {
-#       type     = "ssh"
-#       user     = "ubuntu"
-#       private_key = file("./ec2/khalid.pem")
-#       host = self.public_ip
-#     }
+resource "aws_instance" "publicvm1" {
+ ami           = var.ami_id
+ instance_type = var.vm_type
+ associate_public_ip_address = true
+ subnet_id = var.publicsubnet1-id
+ vpc_security_group_ids = [var.securitygroupid]
+ key_name = "paula_key"
+ tags = {
+    Name = "publicvm1"
+  }
+ provisioner "local-exec" {
+  when = create
+   command = "echo public_ip1  ${self.public_ip} >> ./public_ip.txt"
+ }
+ connection {
+      type     = "ssh"
+      user     = "ubuntu"
+      private_key = file("./ec2/paula_key.pem")
+      host = self.public_ip
+    }
 
-#  provisioner "remote-exec" {
-#     inline = var.provisionerData
+ provisioner "remote-exec" {
+    inline =       ["sudo apt update -y",
+      "sudo apt install -y nginx",
+      "echo 'server { \n listen 80 default_server; \n  listen [::]:80 default_server; \n  server_name _; \n  location / { \n  proxy_pass http://${module.network.pivatedns}; \n  } \n}' > default",
+      "sudo mv default /etc/nginx/sites-enabled/default",
+      "sudo systemctl stop nginx",
+      "sudo systemctl start nginx"]
     
-#   }
-# }
+  }
+}
 
-# resource "aws_instance" "proxy-2" {
-#  ami           = var.proxy2-ami
-#   instance_type = var.proxy2-instance-type
-#   associate_public_ip_address = true
-#   subnet_id = var.mysubnet2-id
-#   vpc_security_group_ids = [var.pubSecGroupId]
-#   key_name = "paula_key"
-#   tags = {
-#     Name = "proxy2"
-#   }
-#   provisioner "local-exec" {
-#     when = create
-#    command = "echo public_ip2  ${self.public_ip} >> ./public_ip.txt"
-#  }
-#  connection {
-#       type     = "ssh"
-#       user     = "ubuntu"
-#       private_key = file("./ec2/khalid.pem")
-#       host = self.public_ip
-#     }
+resource "aws_instance" "publicvm2" {
+ ami           = var.ami_id
+  instance_type = var.vm_type
+  associate_public_ip_address = true
+  subnet_id = var.publicsubnet2-id
+  vpc_security_group_ids = [var.securitygroupid]
+  key_name = "paula_key"
+  tags = {
+    Name = "publicvm2"
+  }
+  provisioner "local-exec" {
+    when = create
+   command = "echo public_ip2  ${self.public_ip} >> ./public_ip.txt"
+ }
+ connection {
+      type     = "ssh"
+      user     = "ubuntu"
+      private_key = file("./ec2/paula_key.pem")
+      host = self.public_ip
+    }
 
-#  provisioner "remote-exec" {
-#     inline = var.provisionerData
-#   }
-# }
+ provisioner "remote-exec" {
+    inline =       ["sudo apt update -y",
+      "sudo apt install -y nginx",
+      "echo 'server { \n listen 80 default_server; \n  listen [::]:80 default_server; \n  server_name _; \n  location / { \n  proxy_pass http://${module.network.pivatedns}; \n  } \n}' > default",
+      "sudo mv default /etc/nginx/sites-enabled/default",
+      "sudo systemctl stop nginx",
+      "sudo systemctl start nginx"]
+  }
+}
 
-# resource "aws_instance" "private-ec2-1" {
-#  ami           = var.priv-ec2-1-ami
-#   instance_type = var.priv-ec2-1-instance-type
-#   associate_public_ip_address = false
-#   subnet_id = var.mysubnet3-id
-#   vpc_security_group_ids = [var.pubSecGroupId]
-#   tags = {
-#     Name = "apache1"
-#   }
+resource "aws_instance" "privatevm1" {
+ ami           = var.ami_id
+  instance_type = var.vm_type
+  associate_public_ip_address = false
+  subnet_id = var.privatesubnet1-id
+  vpc_security_group_ids = [var.securitygroupid]
+  tags = {
+    Name = "privatevm2"
+  }
   
-#   user_data = file("install.sh")
+  user_data = file("install.sh")
 
-# }
+}
 
-# resource "aws_instance" "private-ec2-2" {
-#  ami           = var.private-ec2-2-ami
-#   instance_type = var.priv-ec2-2-instance-type
-#   associate_public_ip_address = false
-#   subnet_id = var.mysubnet4-id
-#   vpc_security_group_ids = [var.pubSecGroupId]
-#   tags = {
-#     Name = "apache2"
-#   }
+resource "aws_instance" "privatevm2" {
+ ami           = var.ami_id
+  instance_type = var.vm_type
+  associate_public_ip_address = false
+  subnet_id = var.privatesubnet2-id
+  vpc_security_group_ids = [var.securitygroupid]
+  tags = {
+    Name = "privatevm2"
+  }
   
-#   user_data = file("install.sh")
-# }
+  user_data = file("install.sh")
+}

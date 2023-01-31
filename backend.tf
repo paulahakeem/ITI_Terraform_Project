@@ -3,7 +3,7 @@ terraform {
     bucket         = "paula-bucket-for-statfile"
     key            = "terraform.tfstate"
     region         = "us-east-1"
-    profile        = "paula"
+    profile        = "pola"
     dynamodb_table = "paula-statelock"
   }
 }

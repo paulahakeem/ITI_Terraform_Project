@@ -3,4 +3,8 @@ variable vpc_name  {}
 variable subnets_cidr{}
 variable az1 {}
 variable az2 {}
-variable destination_cidr {}
+variable cidr_from_anywhere {}
+variable publicvmid1 {}
+variable publicvmid2 {}
+variable privatevmid1 {}
+variable privatevmid2 {}
