@@ -1,5 +1,5 @@
 # Terraform
-#The infrastructure contains:
+###The infrastructure contains:
 
 - VPC with 4 subnets 2 public and 2 private in 2 different AZS
 
